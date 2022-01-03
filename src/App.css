@@ -10,6 +10,7 @@
   --light-black: #111;
   --light-blue: #C1FDFF;
   --light-blue-darker: rgb(205, 254, 255);
+  --text-color: #bbd1d1;
   --secondary-blue: #86C0BD;
   --container-width: 768px;
   
@@ -38,12 +39,16 @@ body {
   box-shadow: 7px 8px 5px #35807E;
   border-radius: 4px;
   text-align: center;
+  color: var(--text-color);
 }
 
 /*-------- HOME SCREEN --------*/
-.hangman__title {
+.title {
   color: var(--light-blue);
-  font-size: 2.22;
+  font-size: 2.22rem;
+}
+.hangman__title {
+  
   margin-bottom: 25px;
 }
 .button {
@@ -88,4 +93,27 @@ body {
   .hangman__container {
     height: 680px;
   }
+}
+
+/*-------- INSTRUCTIONS --------*/
+
+
+.instructions__list {
+  padding: 1rem 1.8rem;
+  padding-left: 3rem; 
+  line-height: 1.7;
+  list-style: circle;
+  text-align:left;
+  margin-bottom: 20px;
+}
+.button.menu {
+  width: 170px;
+}
+
+/*-------- GAME SCREEN --------*/
+.game__stats {
+  text-align: left;
+}
+.game__word {
+  letter-spacing: 5px;
 }

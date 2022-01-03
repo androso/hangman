@@ -1,5 +1,5 @@
-export default wordList;
-var wordList = [
+
+export var wordList = [
 	"wares",
 	"soup",
 	"mount",
