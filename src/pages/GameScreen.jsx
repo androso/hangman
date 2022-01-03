@@ -20,14 +20,17 @@ import { wordsList } from "../data";
 export default function GameScreen() {
   const [livesLeft, setLivesLeft] = useState(7);
   const [randomWord, setRandomWord] = useState("");
-  
+  const [placeholderWord, setPlaceholderWord] = useState([...randomWord]);
   
 
   useEffect(() => {
     const randomIndex = getRandomIndex(wordsList);
-    setRandomWord(wordsList[randomIndex]);
+    const randomWord = wordsList[randomIndex];
+    setRandomWord(randomWord);
+    const placeholder = [...randomWord].map(letter => "_");
+    setPlaceholderWord(placeholder);
+    console.log(randomWord);
   }, []);
-  
   
   
   return(
@@ -35,8 +38,8 @@ export default function GameScreen() {
       <p className="game__stats">Lives: {livesLeft}</p>
       <h1 className="game__title title">HANGMAN</h1>
       <Board />
-      <div className="game__word">{randomWord}</div>
-      
+      <div className="game__word">{placeholderWord}</div>
+      <Keyboard />
     </div>
   )
 }

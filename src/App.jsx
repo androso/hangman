@@ -5,10 +5,6 @@ import {Home, Instructions, GameScreen} from "./pages";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
 function App() {
-  useEffect(() => {
-    console.log(sounds);
-  }, [])
-  
   // Instead of using routes that refresh the screen, let's make it a web app that has routes without reloading.
 
   return (
