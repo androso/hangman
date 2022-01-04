@@ -31,7 +31,6 @@ export default function GameScreen() {
   // To access the latest state of keysPressed we do it via keysPressedRef.current
   const keysPressedRef = useRef(keysPressed);
   const setKeysPressed = data => {
-    
     keysPressedRef.current = data;
     _setKeysPressed(data);
   }
@@ -39,17 +38,17 @@ export default function GameScreen() {
   useEffect(() => {
     const getRandomWord = () => {
       const randomIndex = getRandomIndex(wordsList);
-      const randomWord = wordsList[randomIndex];
+      const randomWord = wordsList[randomIndex].toUpperCase();
+      console.log(randomWord);
       setRandomWord(randomWord);
       const placeholder = [...randomWord].map(letter => "_");
       setPlaceholderWord(placeholder);
     }
     getRandomWord();
-
-    window.addEventListener('keydown', handlePhysicalKeyboardInput);
+    
   }, []);
-
-  console.log(keysPressed);
+  
+  
   return (
     <div className="hangman__container">
       <p className="game__stats">Lives: {livesLeft}</p>
@@ -57,35 +56,14 @@ export default function GameScreen() {
       <Board />
       <div className="game__word">{placeholderWord}</div>
       <Keyboard
-        handleClick={verifyLetter}
         keysPressed={keysPressed}
+        setKeysPressed={setKeysPressed}
+        keysPressedRef={keysPressedRef}
+        randomWord={randomWord}
+        setPlaceholderWord={setPlaceholderWord}
       />
     </div>
   )
-  function verifyLetter(event) {
-    const $letter = event.target;
-    const letter = event.target.dataset.letter;
-    if ($letter.classList.contains('active')) {
-      sounds.wrong.play();
-      return false;
-    }
-    sounds.click.play();
-
-    setKeysPressed([...keysPressed, letter]);
-    
-  }
-
-  function handlePhysicalKeyboardInput(event) {
-    const letter = event.key.toUpperCase(); 
-    if (letter >= 'A' && letter <= 'Z' && letter.length === 1) {
-      if (keysPressedRef.current.includes(letter)){ 
-        sounds.wrong.play();
-        return false;
-      }
-      setKeysPressed([...keysPressedRef.current, letter]);
-      sounds.click.play();
-    }
-  }
 }
 
 function getRandomIndex(arr) {
