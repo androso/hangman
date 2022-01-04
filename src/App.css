@@ -33,7 +33,7 @@ body {
   position: relative;
   width: 85vw;
   max-width: var(--container-width);
-  height: 370px;
+  /* height: 370px; */
   padding: 20px;
   background: var(--main-bg-color);
   box-shadow: 7px 8px 5px #35807E;
@@ -159,5 +159,5 @@ body {
   background-color: #555;
 }
 .game__trigger {
-
+  
 }

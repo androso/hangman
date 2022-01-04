@@ -1,40 +1,47 @@
-import React from 'react';
-import {Link} from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
-export default function Keyboard() {
+
+// Producing an array of letter from A to Z (uppercased)
+// We do this in order to save time writing each 26 buttons :)
+// More info: https://javascript.plainenglish.io/create-an-array-of-alphabet-characters-in-javascript-with-this-simple-trick-930033079dd3
+
+const alphabetCharCode = Array.from(Array(26))
+  .map((number, index) => index + 65);
+const alphabet = alphabetCharCode.map(charCode => String.fromCharCode(charCode));
+
+
+export default function Keyboard({ handleClick, keysPressed }) {
+
   return (
     <>
-    <p className="game__instructions">Pick an alphabet below to guess the whole word.</p>
-    <div className="game__letters">
-      <button className="game__letter">a</button>
-      <button className="game__letter">b</button>
-      <button className="game__letter">c</button>
-      <button className="game__letter">d</button>
-      <button className="game__letter">e</button>
-      <button className="game__letter">f</button>
-      <button className="game__letter">g</button>
-      <button className="game__letter">h</button>
-      <button className="game__letter">i</button>
-      <button className="game__letter">j</button>
-      <button className="game__letter">k</button>
-      <button className="game__letter">l</button>
-      <button className="game__letter">m</button>
-      <button className="game__letter">n</button>
-      <button className="game__letter">o</button>
-      <button className="game__letter">p</button>
-      <button className="game__letter">q</button>
-      <button className="game__letter">r</button>
-      <button className="game__letter">s</button>
-      <button className="game__letter">t</button>
-      <button className="game__letter">u</button>
-      <button className="game__letter">v</button>
-      <button className="game__letter">w</button>
-      <button className="game__letter">x</button>
-      <button className="game__letter">y</button>
-      <button className="game__letter">z</button>
-    </div>
-    <Link to="/" className="button game__trigger">Main Menu</Link>
+      <p className="game__instructions">Pick an alphabet below to guess the whole word.</p>
+      <div className="game__letters">
+
+
+        {alphabet.map(letter => {
+          return (
+            <Button
+              key={letter}
+              className={`game__letter ${keysPressed.includes(letter) ? 'active' : null}`}
+              handleClick={(event) => { handleClick(event) }}
+              inner={letter}
+            />
+          )
+        })}
+      </div>
+      <Link to="/" className="button game__trigger">Main Menu</Link>
     </>
   )
 
+}
+
+function Button({ className, handleClick, inner }) {
+  return (
+    <button
+      className={className}
+      onClick={handleClick}
+      data-letter={inner}
+    >{inner}</button>
+  )
 }
