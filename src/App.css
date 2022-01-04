@@ -33,7 +33,7 @@ body {
   position: relative;
   width: 85vw;
   max-width: var(--container-width);
-  /* height: 370px; */
+  min-height: 370px;
   padding: 20px;
   background: var(--main-bg-color);
   box-shadow: 7px 8px 5px #35807E;
@@ -150,13 +150,20 @@ body {
   border: 3px solid var(--main-bg-color);
   font-size: 1.2rem;
   cursor: pointer;
+  
 }
 .game__letter:hover {
   border: 3px solid var(--light-blue);
 }
-.game__letter.active {
+.game__letter.pressed {
   cursor: default;
   background-color: #555;
+}
+/* .game__letter.pressed:active{
+  border: 3px solid red;
+} */
+.game__letter.pressed.wrong {
+  border: 3px solid red;
 }
 .game__trigger {
   
