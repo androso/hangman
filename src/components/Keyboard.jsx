@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 import { Link } from 'react-router-dom';
 import {sounds} from '../data';
@@ -11,14 +11,31 @@ const alphabetCharCode = Array.from(Array(26))
 const alphabet = alphabetCharCode.map(charCode => String.fromCharCode(charCode));
 
 
-export default function Keyboard({keysPressed, keysPressedRef, setKeysPressed, randomWord, setPlaceholderWord }) {
-  const [invalidKey, setInvalidKey] = useState('');
+export default function Keyboard({setGameResults, placeholderWordRef, randomWordRef, keysPressed, keysPressedRef, setKeysPressed, setPlaceholderWord, setLivesLeft, livesLeftRef }) {
+  //TODO validate if the letter we just pressed is valid
+
+  const [invalidKey, _setInvalidKey] = useState('');
+  const invalidKeyRef = useRef(invalidKey);
+  const setInvalidKey = data => {
+    invalidKeyRef.current = data;
+    _setInvalidKey(data);
+  }
+  // const [results, setResults] = useState('');
   
   useEffect(() => {
     window.addEventListener('keydown', handlePhysicalKeyboardInput);
-    console.log(randomWord);
+    return () => {
+      window.removeEventListener('keydown', handlePhysicalKeyboardInput);
+    };
   }, [])
-
+  
+  // useEffect(() => {
+  //   setGameResults(results);
+  //   return () => {
+      
+  //   };
+  // }, [results]);
+  
   return (
     <>
       <p className="game__instructions">Pick an alphabet below to guess the whole word.</p>
@@ -30,37 +47,33 @@ export default function Keyboard({keysPressed, keysPressedRef, setKeysPressed, r
             <Button
               key={letter}
               className={`game__letter ${keysPressed.includes(letter) ? 'pressed' : ""} ${invalidKey === letter ? 'wrong' : ""}`}
-              handleClick={(event) => { verifyLetter(event) }}
+              handleClick={(event) => { handleTouchInput(event) }}
               inner={letter}
-              
             />
           )
         })}
       </div>
-      <Link to="/" className="button game__trigger">Main Menu</Link>
     </>
   )
 
-  function verifyLetter(event) {
+  function handleTouchInput(event) {
     const letter = event.target.dataset.letter.toUpperCase();
     
     if (keysPressed.includes(letter)) {
-      console.log('here')
+
       setInvalidKey(letter);
         setTimeout(() => {
           setInvalidKey('');
         }, 150);
         sounds.wrong.play();
         return false;
+
     }
     sounds.click.play();
     setKeysPressed([...keysPressed, letter]);
+    validateLetter(letter);
     
-    if (randomWord.includes(letter)) {
-      console.log('correct');
-    } else {
-      console.log('wrong');
-    }
+
   }
   
   function handlePhysicalKeyboardInput(event) {
@@ -83,16 +96,55 @@ export default function Keyboard({keysPressed, keysPressedRef, setKeysPressed, r
   }
   function validateLetter(letter) {
     
+    if (randomWordRef.current.includes(letter)) {
+      // We need to know if the letter the user guessed repeats multiple times in the randomWord, 
+      // in order to display them at the same time in our screen
+      let letterPositions = [];
+      
+      // we traverse the randomWordRef
+        //If current letter === letter, we store that index in letterPosition
+      [...randomWordRef.current].forEach((currentLetter, index) => {
+        if (currentLetter === letter) {
+          letterPositions.push(index);
+        }
+      })
+
+      const newPlaceholder = placeholderWordRef.current.map((element, index) => {
+        if (letterPositions.includes(index)) {
+          return randomWordRef.current[index];
+        } else {
+          return element;
+        }
+      });
+      
+      if (newPlaceholder.join("") === randomWordRef.current) {
+        setGameResults('won');
+        // setResults('won');
+      }
+      setPlaceholderWord(newPlaceholder);
+      
+    } else {
+      if (livesLeftRef.current - 1 === 0) {
+        setGameResults('lost'); 
+      } else {
+        setInvalidKey(letter);
+        setTimeout(() => {
+          setInvalidKey('');
+        }, 150);
+      }
+      // GAME ENDS WITH PLAYER LOOSING
+      setLivesLeft(livesLeftRef.current - 1);
+      
+    }
   }
 }
 
 function Button({ className, handleClick, inner }) {
-
   return (
     <button
       className={className}
       onClick={handleClick}
       data-letter={inner}
     >{inner}</button>
-  )
+  ); 
 }

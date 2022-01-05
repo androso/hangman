@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Board, Keyboard } from "../components";
+import { Board, Keyboard, ResultsScreen } from "../components";
 import { wordsList, sounds } from "../data";
+import {Link} from "react-router-dom";
 
 // Render skeleton 
 // We gotta pick a random word from WordsList (RandomWord)
@@ -20,11 +21,12 @@ import { wordsList, sounds } from "../data";
 // Else we do nothing
 
 export default function GameScreen() {
-  //TODO map each letter of the keyboard with physical
-
-  const [livesLeft, setLivesLeft] = useState(7);
-  const [randomWord, setRandomWord] = useState("");
-  const [placeholderWord, setPlaceholderWord] = useState([...randomWord]);
+  
+  
+  const [gameResults, setGameResults] = useState(null);
+  const [livesLeft, _setLivesLeft] = useState(7);
+  const [randomWord, _setRandomWord] = useState("");
+  const [placeholderWord, _setPlaceholderWord] = useState([...randomWord]);
   const [keysPressed, _setKeysPressed] = useState([]);
   
   // Because we can't keep track of the latest state of keysPressed inside of the event listener attached to the window (used to bing physical key with screen), we create a ref to keysPressed and another function that will update the state of the ref and original to the latest.
@@ -35,11 +37,29 @@ export default function GameScreen() {
     _setKeysPressed(data);
   }
 
+  const randomWordRef = useRef(randomWord);
+  const setRandomWord = data => {
+    randomWordRef.current = data;
+    _setRandomWord(data);
+  }
+
+  const placeholderWordRef = useRef(placeholderWord);
+  const setPlaceholderWord = data => {
+    placeholderWordRef.current = data;
+    _setPlaceholderWord(data);
+  }
+  
+  const livesLeftRef = useRef(livesLeft);
+  const setLivesLeft = data => {
+    livesLeftRef.current = data;
+    _setLivesLeft(data);
+  }
+
   useEffect(() => {
     const getRandomWord = () => {
       const randomIndex = getRandomIndex(wordsList);
       const randomWord = wordsList[randomIndex].toUpperCase();
-      console.log(randomWord);
+      
       setRandomWord(randomWord);
       const placeholder = [...randomWord].map(letter => "_");
       setPlaceholderWord(placeholder);
@@ -48,23 +68,36 @@ export default function GameScreen() {
     
   }, []);
   
-  
   return (
     <div className="hangman__container">
-      <p className="game__stats">Lives: {livesLeft}</p>
-      <h1 className="game__title title">HANGMAN</h1>
-      <Board />
-      <div className="game__word">{placeholderWord}</div>
-      <Keyboard
-        keysPressed={keysPressed}
-        setKeysPressed={setKeysPressed}
-        keysPressedRef={keysPressedRef}
-        randomWord={randomWord}
-        setPlaceholderWord={setPlaceholderWord}
-      />
+      {gameResults && <ResultsScreen results={gameResults} word={randomWord}/>}
+      {!gameResults ? (
+          <>
+            <p className="game__stats">Lives: {livesLeft}</p>
+            <h1 className="game__title title">HANGMAN</h1>
+            <Board />
+            <div className="game__word">{placeholderWord}</div>
+            <Keyboard
+              keysPressed={keysPressed}
+              setKeysPressed={setKeysPressed}
+              keysPressedRef={keysPressedRef}
+              randomWord={randomWord}
+              setPlaceholderWord={setPlaceholderWord}
+              placeholderWordRef={placeholderWordRef}
+              setLivesLeft={setLivesLeft}
+              randomWordRef={randomWordRef}
+              setGameResults={setGameResults}
+              livesLeftRef={livesLeftRef}
+            />
+          </>
+        ): ""}
+      <Link to="/" onClick={() => {sounds.click.play()}} className="button game__trigger">Main Menu</Link>
+      
     </div>
+    
   )
 }
+
 
 function getRandomIndex(arr) {
   return Math.floor(Math.random() * (arr.length - 0) + 0);
