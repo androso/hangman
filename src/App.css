@@ -159,12 +159,14 @@ body {
   cursor: default;
   background-color: #555;
 }
-/* .game__letter.pressed:active{
-  border: 3px solid red;
-} */
 .game__letter.pressed.wrong {
   border: 3px solid red;
 }
-.game__trigger {
+/*-------- RESULTS SCREEN --------*/
+h3.result:first-of-type {
+  margin-top: 20px;
+}
+h3.result:last-of-type {
+  margin-bottom: 25px;
   
 }
