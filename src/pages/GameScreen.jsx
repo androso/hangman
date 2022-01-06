@@ -66,8 +66,9 @@ export default function GameScreen() {
     }
     getRandomWord();
 
-  }, []);
 
+  }, []);
+  
   return (
     <div className="hangman__container">
       {gameResults ? (
