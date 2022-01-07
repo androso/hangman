@@ -77,7 +77,7 @@ export default function GameScreen() {
           <>
           <p className="game__stats">Lives: {livesLeft}</p>
           <h1 className="game__title title">HANGMAN</h1>
-          <Board />
+          <Board livesLeft={livesLeft}/>
           <div className="game__word">{placeholderWord}</div>
           <Keyboard
             keysPressed={keysPressed}
