@@ -3,23 +3,6 @@ import { Board, Keyboard, ResultsScreen } from "../components";
 import { wordsList, sounds } from "../data";
 import { Link } from "react-router-dom";
 
-// Render skeleton 
-// We gotta pick a random word from WordsList (RandomWord)
-// We display the placeholder of that word (wordPlaceholder)
-// We create a copy of the word [] inside of an array
-// We replace each letter for a _
-// We render those _ in our html
-
-// We add event listeners to each letter
-// When clicked:
-// If first time we continue
-// We check if that word is inside of the RandomWord
-// If so, we get the index and replace the _ inside of wordPlaceholder for that letter
-// else we console.log('not right letter')
-// We discount a life
-// At the end we deactivate that letter
-// Else we do nothing
-
 export default function GameScreen() {
 
 

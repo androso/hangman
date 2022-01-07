@@ -35,19 +35,19 @@ export default function Board({livesLeft}) {
         break;
       case 4:
         drawBody();
-        //Draw left hand
+        
         break;
       case 3:
-        //Draw right hand
+        
         drawLeftHand();
         break;
       case 2:
         drawRightHand();
 
-        //Draw left leg
+        
         break;
       case 1:
-        //Draw right leg
+        
         drawLeftLeg();
         break;
     }
@@ -55,10 +55,7 @@ export default function Board({livesLeft}) {
   }, [livesLeft]);
 
   return (
-    <>
-      <canvas ref={canvasRef}></canvas>
-      <p>The board is supposed to be here</p>
-    </>
+    <canvas ref={canvasRef}></canvas>
   )
   function drawLine(startX, startY, endX, endY) {
     canvasContext.moveTo(startX, startY);
