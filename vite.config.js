@@ -1,23 +1,10 @@
-import reactRefresh from '@vitejs/plugin-react-refresh'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
-/**
- * https://vitejs.dev/config/
- * @type { import('vite').UserConfig }
-*/
-
-
-//! For use on Replit only
-export default {
-  plugins: [reactRefresh()],
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [react()],
   server: {
     host: '0.0.0.0',
-    hmr: {
-      port: 443,
-    }
   }
-}
-
-//! IF YOU'RE NOT USING REPLIT USE THIS CONFIG INSTEAD 
-// export default {
-//   plugins: [reactRefresh()]
-// }
+})
